@@ -5,8 +5,7 @@ import Link from "next/link";
 import { listAccount } from "@/constants/data-account.js"
 import Navigation from "../navigation";
 import { useRouter } from "next/router";
-"../navigation/index"
-
+"../navigation/index";
 
 function TopHeader() {
     const router = useRouter();
@@ -191,6 +190,21 @@ function TopHeader() {
                                         Khuyến mãi
                                     </Link>
                                 </li>
+                                <li
+                                    className={classNames(
+                                        "text-base font-normal font-roboto leading-7",
+                                    )}
+                                >
+                                    <Link
+                                        href="/contact"
+                                        className={`flex items-center ${router.pathname === "/contact"
+                                            ? "text-primry"
+                                            : ""
+                                            }`}
+                                    >
+                                        Liên hệ
+                                    </Link>
+                                </li>
                             </ul>
                             <div className="relative sm:justify-center border-red md:hidden sm:pt-2 pt-[0.5rem]">
                                 <input
@@ -214,7 +228,6 @@ function TopHeader() {
                 </div>
             </div>
         </div>
-
     )
 }
 export default memo(TopHeader);
