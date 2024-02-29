@@ -1,11 +1,27 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import HomePage from "./home/index";
-function Home() {
+import MoveTop from "@/components/App/AppMoveTop";
+import axiosClient from "@/libraries/axiosClient";
+
+function Home({ products }) {
   return (
-   <div className="container">
-   <HomePage />
-   </div>
+    <main className="container">
+      <HomePage
+        products={products}
+      />
+      <MoveTop />
+    </main>
   );
 };
 
 export default memo(Home);
+
+export async function getServerSideProps() {
+  const responseProduct = await axiosClient.get("/products");
+  const products = responseProduct.data;
+  return {
+    props: {
+      products,
+    },
+  };
+}
