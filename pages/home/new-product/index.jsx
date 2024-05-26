@@ -10,18 +10,17 @@ import { Button, Divider, Rate } from "antd";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-
 import "swiper/css";
 
-function NewProduct({ products, reviews }) {
-  const THIRTY_DAYS_IN_MS = 30 * 24 * 60 * 60 * 1000; // 30 ngày tính bằng mili giây
+function NewProduct({ products = [], reviews = [] }) {
+  const THIRTY_DAYS_IN_MS = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
   const currentDate = new Date();
 
   function filterNewProducts(products) {
     return products.filter((product) => {
       const createdAtTimestamp = new Date(product.createdAt).getTime();
       const timeDifference = currentDate.getTime() - createdAtTimestamp;
-      return timeDifference <= THIRTY_DAYS_IN_MS; 
+      return timeDifference <= THIRTY_DAYS_IN_MS;
     });
   }
 
@@ -52,7 +51,7 @@ function NewProduct({ products, reviews }) {
   return (
     <div className="pt-[2.5rem]">
       <div className="flex justify-between">
-        <span className="font-roboto font-medium text-primry text-2xl test">
+        <span className="font-roboto font-medium text-primry text-2xl">
           SẢN PHẨM MỚI
         </span>
         <Link
@@ -112,87 +111,80 @@ function NewProduct({ products, reviews }) {
             },
           }}
         >
-          {newProducts &&
-            newProducts.map((item) => {
-              return (
-                <SwiperSlide key={item.id}>
-                  <div
-                    className="sm:min-w-[15.625rem] sm:min-h-[12.5rem] min-w-[100px] min-h-[100px] shadow-md rounded hover:bg-second-3 flex flex-col justify-center items-center"
-                    style={{
-                      background:
-                        "-webkit-linear-gradient(top,#fff 0%,#f7f7f7 100%)",
-                    }}
-                  >
-                    <div className="group relative inline-flex justify-center overflow-hidden items-center">
-                      <Link href={`/${item.id}`}>
-                        <img
-                          src={`${API_URL}/${item.imageUrl}`}
-                          alt={`slide-${item.id}`}
-                          className="hover:-translate-y-1 hover:scale-125  duration-300 sm:w-full sm:block flex items-center w-[7.5rem] object-contain"
-                        />
-                      </Link>
-                    </div>
-                    {item.discount > 0 && (
-                      <span className="!absolute top-0 right-0 bg-primry font-poppins text-sm font-normal py-[4px] sm:px-[25px] px-[10px] text-white">
-                        -{item.discount}%
-                      </span>
-                    )}
-                    <div className="flex flex-col gap-[6px]">
-                    <span className="!absolute top-0 left-0 bg-primry font-poppins text-sm font-normal py-[4px] sm:px-[25px] px-[10px] text-white">
-                        NEW
-                      </span>
-                      <p className="font-roboto text-sm font-normal flex justify-center xxl:truncate text-center">
-                        {item.productName}
+          {newProducts.map((item) => (
+            <SwiperSlide key={item.id}>
+              <div
+                className="sm:min-w-[15.625rem] sm:min-h-[12.5rem] min-w-[100px] min-h-[100px] shadow-md rounded hover:bg-second-3 flex flex-col justify-center items-center"
+                style={{
+                  background:
+                    "-webkit-linear-gradient(top,#fff 0%,#f7f7f7 100%)",
+                }}
+              >
+                <div className="group relative inline-flex justify-center overflow-hidden items-center">
+                  <Link href={`/${item.id}`}>
+                    <img
+                      src={`${API_URL}/${item.imageUrl}`}
+                      alt={`slide-${item.id}`}
+                      className="hover:-translate-y-1 hover:scale-125  duration-300 sm:w-full sm:block flex items-center w-[7.5rem] object-contain"
+                    />
+                  </Link>
+                </div>
+                {item.discount > 0 && (
+                  <span className="!absolute top-0 right-0 bg-primry font-poppins text-sm font-normal py-[4px] sm:px-[25px] px-[10px] text-white">
+                    -{item.discount}%
+                  </span>
+                )}
+                <div className="flex flex-col gap-[6px]">
+                  <span className="!absolute top-0 left-0 bg-primry font-poppins text-sm font-normal py-[4px] sm:px-[25px] px-[10px] text-white">
+                    NEW
+                  </span>
+                  <p className="font-roboto text-sm font-normal flex justify-center xxl:truncate text-center">
+                    {item.productName}
+                  </p>
+                  <span className="font-roboto text-sm font-normal flex justify-center">
+                    {item.code}
+                  </span>
+                  <div className="flex justify-around">
+                    {item.discount ? (
+                      <>
+                        <span className="font-roboto text-sm flex justify-center text-primry font-semibold">
+                          {numeral(
+                            item.price - (item.price * item.discount) / 100
+                          ).format("0,0")}
+                          đ
+                        </span>
+                        <span className="font-roboto text-sm flex justify-center text-gray line-through">
+                          {numeral(item.price).format("0,0")}đ
+                        </span>
+                      </>
+                    ) : (
+                      <p className="font-roboto text-sm flex justify-center text-primry font-semibold">
+                        {numeral(item.price).format("0,0")}đ
                       </p>
-                      <span className="font-roboto text-sm font-normal flex justify-center">
-                        {item.code}
-                      </span>
-                      <div className="flex justify-around">
-                        {item.discount ? (
-                          <>
-                            <span className="font-roboto text-sm flex justify-center text-primry font-semibold">
-                              {numeral(
-                                item.price -
-                                  (item.price * item.discount * 1) / 100
-                              ).format("0,0")}
-                              đ
-                            </span>
-                            <span className="font-roboto text-sm flex justify-center text-gray line-through">
-                              {numeral(item.price).format("0,0")}đ
-                            </span>
-                          </>
-                        ) : (
-                          <p className="font-roboto text-sm flex justify-center text-primry font-semibold">
-                            {numeral(item.price).format("0,0")}đ
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex justify-center gap-2">
-                        <Rate
-                          allowHalf
-                          disabled
-                          defaultValue={calculateAverageRating(
-                            item.id,
-                            reviews
-                          )}
-                          style={{ fontSize: "18px" }}
-                        />
-                      </div>
-                      <Divider>
-                        <Button
-                          className="bg-black text-white hover:bg-white hover:text-black font-light"
-                          onClick={() => {
-                            router.push(`/${item.id}`);
-                          }}
-                        >
-                          Chi tiết
-                        </Button>
-                      </Divider>
-                    </div>
+                    )}
                   </div>
-                </SwiperSlide>
-              );
-            })}
+                  <div className="flex justify-center gap-2">
+                    <Rate
+                      allowHalf
+                      disabled
+                      defaultValue={calculateAverageRating(item.id, reviews)}
+                      style={{ fontSize: "18px" }}
+                    />
+                  </div>
+                  <Divider>
+                    <Button
+                      className="bg-black text-white hover:bg-white hover:text-black font-light"
+                      onClick={() => {
+                        router.push(`/${item.id}`);
+                      }}
+                    >
+                      Chi tiết
+                    </Button>
+                  </Divider>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>
