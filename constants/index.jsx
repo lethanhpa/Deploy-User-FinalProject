@@ -1,4 +1,4 @@
 export const TOKEN = "AUTHENTICATION_TOKEN";
 export const REFRESH_TOKEN = "AUTHENTICATION_REFRESH_TOKEN";
-export const API_URL = 'http://127.0.0.1:9000';
+export const API_URL = 'https://deploy-be-finalproject.onrender.com/';
 
